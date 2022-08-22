@@ -2,7 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { openai, openAi } from '../../../lib/server/openai';
 import { CreateCompletionResponse } from 'openai';
-import fs from 'fs';
 import nc from 'next-connect';
 let quotes = JSON.parse(fs.readFileSync('./public/quotes.json', 'utf-8'));
 
