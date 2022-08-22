@@ -47,7 +47,6 @@ handler.get(
     }
     ai._addExample('Create a random quote');
     ai._addExample('This is a quote: "');
-    fs.writeFileSync('./wowowow.json', JSON.stringify(ai._prompt));
 
     let call = await ai.generate();
     res.status(200).json({ response: call.data });
