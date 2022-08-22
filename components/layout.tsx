@@ -8,7 +8,7 @@ export interface LayoutProps{
 const Layout = ({ children }: LayoutProps) => {
     let navPages = [
         { name: "Home", href: "/" },
-        { name: "wallah", href: "/wallah" },
+        { name: "Quote gen", href: "/quotes" },
         { name: "wallah2", href: "/wallah2" },
     ]
     return (
@@ -18,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <div className="relative flex items-left">
                         <div className="flex-1 flex items-left justify-left items-stretch justify-start">
                                 <div className="flex-shrink-0 flex items-left">
-                                    <img className="hidden lg:block h-8 w-auto" src="./openailogo.png" alt="Workflow"></img>
+                                    <img className="lg:block h-8 w-auto" src="./openailogo.png" alt="Workflow"></img>
                                 </div>
                                 <div className='block ml-6'>
                                     <div className='flex space-x-4'>
