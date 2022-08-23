@@ -36,7 +36,7 @@ function quotes() {
           <h1 className='py-12 text-xl'>{quote}</h1>
         </div>
         <div>
-        <h1 className='text-center'>The other side</h1>
+          <h1 className='text-center'>The other side</h1>
         </div>
       </div>
     </div>
