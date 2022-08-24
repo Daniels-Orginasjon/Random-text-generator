@@ -5,8 +5,8 @@ import {useRouter} from 'next/router'
 
 function Navbar({ navPages }: { navPages: Pages[] }) {
         let router = useRouter()
-    console.log(router.pathname)
     let currentPage = router.pathname
+
     let thisPage = navPages.find((item) => {
         return item.href.toLowerCase() === currentPage
     })
@@ -22,10 +22,9 @@ function Navbar({ navPages }: { navPages: Pages[] }) {
                                 <div className='block ml-6'>
                                     <div className='flex space-x-4'>
                                     {navPages.map((page, i) => {
-                                        if(page.name ==thisPage?.name)
-                                            return <a href={page.href} className='text-white hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium bg-gray-600' key={i}>{page.name}</a>
-                                        else  return <a href={page.href} className='text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium' key={i}>{page.name}</a>
-})}
+                                        let active= page.name ==thisPage?.name ? "bg-gray-600" : ""
+                                        return <a href={page.href} className={"text-white hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium "+active} key={i}>{page.name}</a>
+                                    })}
                                     </div>
                                 </div>
                         </div>
