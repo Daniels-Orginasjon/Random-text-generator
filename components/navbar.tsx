@@ -1,4 +1,3 @@
-import Layout from "./layout";
 import Pages from "./layout";
 import Image from 'next/image'
 
