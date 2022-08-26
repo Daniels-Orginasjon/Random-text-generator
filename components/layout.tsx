@@ -1,7 +1,5 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import Navbar from './navbar'
-import Image from 'next/image'
 import FooterBar from './footer'
 import {useRouter} from 'next/router'
 
@@ -15,8 +13,9 @@ export interface LayoutProps{
 
 let navPages: Pages[]= [
         { name: "Home", href: "/" },
-        { name: "Quote", href: "/quotes" },
-        { name: "wallah2", href: "/wallah2" },
+        { name: "Quotes", href: "/quotes" },
+        { name: "Recipes", href: "/recipes" },
+        { name: "Pick-up Lines", href: "/pickup" },
 ]
 
 
@@ -32,6 +31,7 @@ const Layout = ({ children }: LayoutProps) => {
         <>
             <Head>
                 <title>{thisPage?.name}</title>
+                <link rel="icon" href="./openailogo.png"></link>
             </Head>
             <div className='min-h-screen flex flex-col'>
         <Navbar navPages={navPages}/>
