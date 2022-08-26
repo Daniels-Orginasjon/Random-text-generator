@@ -23,7 +23,7 @@ function Navbar({ navPages }: { navPages: Pages[] }) {
                                     <div className='flex space-x-4'>
                                     {navPages.map((page, i) => {
                                         let active= page.name ==thisPage?.name ? "bg-gray-600" : ""
-                                        return <a href={page.href} className={"text-white hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium "+active} key={i}>{page.name}</a>
+                                        return <a href={page.href} className={"text-white hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium " +active} key={i}>{page.name}</a>
                                     })}
                                     </div>
                                 </div>
