@@ -12,7 +12,7 @@ export type ResponseData = {
 
 interface PromptApiRequest extends NextApiRequest {
   query: {
-    prompt: string;
+    type: string;
   };
 }
 const shuffleArray = (arr: any[]) => arr.sort(() => 0.5 - Math.random());
