@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ResponseData } from '../pages/api/openai/quotes';
 let WEB_URL = "http://localhost:3000/"
-function quotes() {
+function Quotes() {
   const [quote, setQuote] = useState("");
   const [loading, setLoading] = useState(false);
   const [quotesArray, setQuotesArray] = useState([]);
@@ -44,4 +44,4 @@ function quotes() {
   )
 }
 
-export default quotes
+export default Quotes
