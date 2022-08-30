@@ -16,9 +16,10 @@ export default function recipes() {
         res.json()
     )
       .then((data: ResponseData) => {
-        if (data.response.choices !== undefined && data.response.choices.length > 0 && typeof data.response.choices[0].text === "string") {
+          if (data.response.choices !== undefined && data.response.choices.length > 0 && typeof data.response.choices[0].text === "string") {
           setRecipe(data.response.choices[0].text)
           //setPickupArray(pickupArray.concat(<h2>{data.response.choices[0].text}</h2>))
+                    
           
         }
         setLoading(false)
@@ -40,7 +41,7 @@ export default function recipes() {
             {/* <div className='py-12 text-xl'>{pickup}</div> */}
         </div>
         <div>
-            <div className='text-center'>{recipe}</div>
+            <div className='text-center whitespace-pre-wrap'><p>{recipe}</p></div>
         </div>
       </div>
     </div>

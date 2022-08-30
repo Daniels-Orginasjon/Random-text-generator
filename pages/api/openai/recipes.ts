@@ -40,7 +40,7 @@ handler.get(
       },
     });
 
-    ai._addExample('Create a random recipe');
+    ai._addExample('Create a random recipe with ingredients, and give instructions for it.');
 
 
     let call = await ai.generate();
