@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { ResponseData } from '../pages/api/openai/quotes';
 let WEB_URL = "http://localhost:3000/"
-function quotes() {
+function Quotes() {
   const [quote, setQuote] = useState("");
   const [loading, setLoading] = useState(false);
-  const [quotesArray, setQuotesArray] = useState([]);
+  const [quotesArray, setQuotesArray] = useState<string[]>([]);
   const handleClick = () => {
     if (loading === true) return false;
     setLoading(true);
@@ -16,7 +16,7 @@ function quotes() {
       .then((data: ResponseData) => {
         if (data.response.choices !== undefined && data.response.choices.length > 0 && typeof data.response.choices[0].text === "string") {
           setQuote(data.response.choices[0].text)
-          setQuotesArray(quotesArray.concat(<h2>{data.response.choices[0].text}</h2>))
+          setQuotesArray([...quotesArray, data.response.choices[0].text])
           
         }
         setLoading(false)
@@ -44,4 +44,4 @@ function quotes() {
   )
 }
 
-export default quotes
+export default Quotes

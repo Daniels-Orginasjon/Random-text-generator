@@ -3,10 +3,10 @@ import { ResponseData } from '../pages/api/openai/pickups';
 let WEB_URL = "http://localhost:3000/"
 
 
-export default function recipes() {
+export default function Pickup() {
     const [pickup, setPickup] = useState("");
     const [loading, setLoading] = useState(false);
-    const [pickupArray, setPickupArray] = useState([]);
+    const [pickupArray, setPickupArray] = useState<string[]>([]);
     const handleClick = () => {
           if (loading === true) return false;
         setLoading(true);
@@ -18,7 +18,7 @@ export default function recipes() {
       .then((data: ResponseData) => {
         if (data.response.choices !== undefined && data.response.choices.length > 0 && typeof data.response.choices[0].text === "string") {
           setPickup(data.response.choices[0].text)
-          setPickupArray(pickupArray.concat(<h2>{data.response.choices[0].text}</h2>))
+          setPickupArray([...pickupArray, data.response.choices[0].text])
           
         }
         setLoading(false)

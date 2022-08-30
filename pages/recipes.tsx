@@ -3,7 +3,7 @@ import { ResponseData } from '../pages/api/openai/pickups';
 let WEB_URL = "http://localhost:3000/"
 
 
-export default function recipes() {
+export default function Recipes() {
     const [recipe, setRecipe] = useState("");
     const [loading, setLoading] = useState(false);
     //const [pickupArray, setPickupArray] = useState([]);
@@ -29,7 +29,7 @@ export default function recipes() {
         setLoading(false);
       })
 
-        
+      
     }
     return (
     <div className='container mx-auto border mt-5 min-h-96 border-zinc-700'>
