@@ -37,7 +37,9 @@ function Quotes() {
           <div className='py-12 text-xl'>{quote}</div>
         </div>
         <div>
-          <div className='text-center'>{quotesArray}</div>
+          <div className='text-center'>{quotesArray.map((item, i) => {
+            return <h1 key={i}>{item}</h1>
+          })}</div>
         </div>
       </div>
     </div>
