@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ResponseData } from '../pages/api/openai/pickups';
+import { toast } from 'react-toastify';
+
+import { ErrorResponse, ResponseData } from '../types/apiresponse';
 let WEB_URL = "http://localhost:3000/"
 
 
@@ -11,9 +13,13 @@ export default function Recipes() {
           if (loading === true) return false;
         setLoading(true);
         
-          fetch(WEB_URL + "api/openai/recipes")
-      .then((res) => 
-        res.json()
+      fetch(WEB_URL + "api/openai/recipes")
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw res.json();
+      }
     )
       .then((data: ResponseData) => {
           if (data.response.choices !== undefined && data.response.choices.length > 0 && typeof data.response.choices[0].text === "string") {
@@ -24,8 +30,9 @@ export default function Recipes() {
         }
         setLoading(false)
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(async (err: Promise<ErrorResponse>) => {
+        let error = await err;
+        toast.error(error.error);
         setLoading(false);
       })
 
