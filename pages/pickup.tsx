@@ -47,7 +47,9 @@ export default function Pickup() {
             <div className='py-12 text-xl'>{pickup}</div>
         </div>
         <div>
-            <div className='text-center'>{pickupArray}</div>
+            <div className='text-center'>{pickupArray.map((item, i) => {
+            return <h1 key={i}>{item}</h1>
+          })}</div>
         </div>
       </div>
     </div>

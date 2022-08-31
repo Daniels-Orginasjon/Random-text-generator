@@ -68,7 +68,9 @@ function Quotes() {
           </div>
         </div>
         <div>
-          <h1 className='text-center'>The other side</h1>
+          <div className='text-center'>{quotesArray.map((item, i) => {
+            return <h1 key={i}>{item}</h1>
+          })}</div>
         </div>
       </div>
     </div>

@@ -42,9 +42,8 @@ handler.get(
       },
     });
 
-    ai._addExample(
-      'Create a random recipe with ingredients, and give instructions for it.',
-    );
+    ai._addExample('this is the ingredients and recipe for ');
+
 
     let call = await ai.generate();
     res.status(200).json({ response: call.data });
