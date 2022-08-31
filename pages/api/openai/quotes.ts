@@ -32,6 +32,7 @@ const handler = nc({
 
 handler.get(
   async (req: PromptApiRequest, res: NextApiResponse<ResponseData>) => {
+    let category = req.query.category;
     let ai = new openAi({
       openAi: openai,
       prompt: '',
@@ -49,9 +50,9 @@ handler.get(
     for (let o of _quotes) {
       ai._addExample(`This is a quote: "${o}"`);
     }
-    ai._addExample('Create a random quote');
+    ai._addExample(`Create a ${category} quote`);
     ai._addExample('This is a quote: "');
-    console.log(req.query.category);
+
     let call = await ai.generate();
     res.status(200).json({ response: call.data });
   },
