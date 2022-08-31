@@ -12,9 +12,10 @@ export type ResponseData = {
 
 interface PromptApiRequest extends NextApiRequest {
   query: {
-    type: string;
+    category: string;
   };
 }
+
 const shuffleArray = (arr: any[]) => arr.sort(() => 0.5 - Math.random());
 
 const handler = nc({
@@ -47,7 +48,7 @@ handler.get(
     }
     ai._addExample('Create a random quote');
     ai._addExample('This is a quote: "');
-
+    console.log(req.query.category);
     let call = await ai.generate();
     res.status(200).json({ response: call.data });
   },
