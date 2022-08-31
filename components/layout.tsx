@@ -1,7 +1,9 @@
-import Head from 'next/head';
-import Navbar from './navbar';
-import FooterBar from './footer';
-import { useRouter } from 'next/router';
+import Head from 'next/head'
+import Navbar from './navbar'
+import FooterBar from './footer'
+import {useRouter} from 'next/router'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export interface Pages {
   name: string;
@@ -27,19 +29,24 @@ const Layout = ({ children }: LayoutProps) => {
     return item.href.toLowerCase() === currentPage;
   });
 
-  return (
-    <>
-      <Head>
-        <title>{thisPage?.name}</title>
-        <link rel="icon" href="./openailogo.png"></link>
-      </Head>
-      <div className="min-h-screen flex flex-col">
-        <Navbar navPages={navPages} />
-        <div className="min-h-100vh flex">{children}</div>
-        <FooterBar></FooterBar>
-      </div>
-    </>
-  );
-};
+    return (
+        <>
+            <Head>
+                <title>{thisPage?.name}</title>
+                <link rel="icon" href="./openailogo.png"></link>
+            </Head>
+            <div className='min-h-screen flex flex-col'>
+        <Navbar navPages={navPages}/>
+            <div className='min-h-100vh flex'>{children}</div>
+                <FooterBar></FooterBar>
+                <ToastContainer
+                    position='bottom-right'
+                    newestOnTop
+                    autoClose={5000}
+                />
+                </div>
+</>
+    )
+}
 
 export default Layout;

@@ -4,24 +4,28 @@ import { openai, openAi } from '../../../lib/server/openai';
 import { CreateCompletionResponse } from 'openai';
 import fs from 'fs';
 import nc from 'next-connect';
+import { ErrorResponse, ResponseData } from '../../../types/apiresponse';
 let quotes = JSON.parse(fs.readFileSync('./public/quotes.json', 'utf-8'));
-
-export type ResponseData = {
-  response: CreateCompletionResponse;
-};
 
 interface PromptApiRequest extends NextApiRequest {
   query: {
-    prompt: string;
+    category: string;
   };
 }
+
 const shuffleArray = (arr: any[]) => arr.sort(() => 0.5 - Math.random());
 
 const handler = nc({
-  onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
-    res.status(500).send('Server error');
+  onError: (
+    err,
+    req: ResponseData,
+    res: NextApiResponse<ErrorResponse>,
+    next,
+  ) => {
+    console.log('err');
+    res.status(500).json({ error: 'Server error' });
   },
-  onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
+  onNoMatch: (req: ResponseData, res: NextApiResponse) => {
     res.status(404).send('Not found!');
   },
 });
@@ -47,7 +51,7 @@ handler.get(
     }
     ai._addExample('Create a random quote');
     ai._addExample('This is a quote: "');
-
+    console.log(req.query.category);
     let call = await ai.generate();
     res.status(200).json({ response: call.data });
   },

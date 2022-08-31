@@ -3,10 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { openai, openAi } from '../../../lib/server/openai';
 import { CreateCompletionResponse } from 'openai';
 import nc from 'next-connect';
-
-export type ResponseData = {
-  response: CreateCompletionResponse;
-};
+import { ErrorResponse, ResponseData } from '../../../types/apiresponse';
 
 interface PromptApiRequest extends NextApiRequest {
   query: {
@@ -16,8 +13,13 @@ interface PromptApiRequest extends NextApiRequest {
 const shuffleArray = (arr: any[]) => arr.sort(() => 0.5 - Math.random());
 
 const handler = nc({
-  onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
-    res.status(500).send('Server error');
+  onError: (
+    err,
+    req: NextApiRequest,
+    res: NextApiResponse<ErrorResponse>,
+    next,
+  ) => {
+    res.status(500).json({ error: 'Server Error' });
   },
   onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
     res.status(404).send('Not found!');
@@ -40,8 +42,9 @@ handler.get(
       },
     });
 
-    ai._addExample('Create a random recipe with ingredients, and give instructions for it.');
-
+    ai._addExample(
+      'Create a random recipe with ingredients, and give instructions for it.',
+    );
 
     let call = await ai.generate();
     res.status(200).json({ response: call.data });
