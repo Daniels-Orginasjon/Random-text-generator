@@ -1,5 +1,7 @@
 import React, {  useState } from 'react'
-import { ResponseData } from '../pages/api/openai/quotes';
+import { ToastContainer, toast } from 'react-toastify';
+import { ErrorResponse, ResponseData } from '../types/apiresponse';
+
 let WEB_URL = "http://localhost:3000/"
 function Quotes() {
   const [quote, setQuote] = useState("");
@@ -20,8 +22,12 @@ function Quotes() {
     cat.searchParams.append("category", category)
 
     fetch(cat.href)
-      .then((res) => 
-        res.json()
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw res.json();
+      }
     )
       .then((data: ResponseData) => {
         if (data.response.choices !== undefined && data.response.choices.length > 0 && typeof data.response.choices[0].text === "string") {
@@ -31,8 +37,9 @@ function Quotes() {
         }
         setLoading(false)
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(async (err: Promise<ErrorResponse>) => {
+        let error = await err;
+        toast.error(error.error);
         setLoading(false);
       })
 
