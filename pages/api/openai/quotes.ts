@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { openai, openAi } from '../../../lib/server/openai';
 import { CreateCompletionResponse } from 'openai';
 import fs from 'fs';
-import nc from 'next-connect';
-import { ErrorResponse, ResponseData } from '../../../types/apiresponse';
+import { ResponseData } from '../../../types/apiresponse';
+import { handler } from '../../../middleware/handler';
 let quotes = JSON.parse(fs.readFileSync('./public/quotes.json', 'utf-8'));
 
 interface PromptApiRequest extends NextApiRequest {
@@ -14,21 +14,6 @@ interface PromptApiRequest extends NextApiRequest {
 }
 
 const shuffleArray = (arr: any[]) => arr.sort(() => 0.5 - Math.random());
-
-const handler = nc({
-  onError: (
-    err,
-    req: ResponseData,
-    res: NextApiResponse<ErrorResponse>,
-    next,
-  ) => {
-    console.log('err');
-    res.status(500).json({ error: 'Server error' });
-  },
-  onNoMatch: (req: ResponseData, res: NextApiResponse) => {
-    res.status(404).send('Not found!');
-  },
-});
 
 handler.get(
   async (req: PromptApiRequest, res: NextApiResponse<ResponseData>) => {

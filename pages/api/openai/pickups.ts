@@ -2,29 +2,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { openai, openAi } from '../../../lib/server/openai';
 import { CreateCompletionResponse } from 'openai';
-import nc from 'next-connect';
-import { ErrorResponse, ResponseData } from '../../../types/apiresponse';
-
+import { ResponseData } from '../../../types/apiresponse';
+import { handler } from '../../../middleware/handler';
 interface PromptApiRequest extends NextApiRequest {
   query: {
     prompt: string;
   };
 }
 const shuffleArray = (arr: any[]) => arr.sort(() => 0.5 - Math.random());
-
-const handler = nc({
-  onError: (
-    err,
-    req: NextApiRequest,
-    res: NextApiResponse<ErrorResponse>,
-    next,
-  ) => {
-    res.status(500).json({ error: 'Server Error' });
-  },
-  onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
-    res.status(404).send('Not found!');
-  },
-});
 
 handler.get(
   async (req: PromptApiRequest, res: NextApiResponse<ResponseData>) => {
