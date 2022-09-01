@@ -57,8 +57,8 @@ handler.get(
       `Create a random recipe that includes the ingredients ${ingredientsAsString}:`,
     );
     console.log(ai._prompt);
-    //let call = await ai.generate();
-    //res.status(200).json({ response: call.data });
+    let call = await ai.generate();
+    res.status(200).json({ response: call.data });
   },
 );
 

@@ -15,6 +15,10 @@ export default function Danielsquote() {
   const [selectedIngredient, setSelectedIngredient] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [recentChange, setRecentChange] = useState<number>(-1);
+  const [searchText, setSearchText] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [hidableContent, setHidableContent] = useState<boolean>(true);
   let selectableIngredients = availableIngredients.filter(
     (ingredient) => !selectedIngredients.includes(ingredient),
   );
@@ -22,22 +26,70 @@ export default function Danielsquote() {
     setSelectedIngredients((prevArr): string[] => {
       let newArr = [...prevArr];
       if (newArr.length > id) {
-        let old = newArr.splice(id, 1);
+        newArr.splice(id, 1);
+
         return newArr;
       }
       return newArr;
     });
   };
-  const addIngredient = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ): void | boolean => {
-    setSelectedIngredient(event.target.value);
-    const selected: string = event.target.value;
-    if (selected === 'none') return false;
-    setSelectedIngredients([...selectedIngredients, selected]);
-    setSelectedIngredient('none');
+
+  let existsInArrayLowerCase = (arr1: any[], aString: string): boolean =>
+    arr1.find((n) => n.toLowerCase() === aString.toLowerCase()) !== undefined;
+
+  const addNewIngredient = (ingredient: string): void => {
+    ingredient = ingredient.toLowerCase();
+    if (
+      existsInArrayLowerCase(selectedIngredients, ingredient) ||
+      ingredient === ''
+    )
+      return;
+    if (existsInArrayLowerCase(availableIngredients, ingredient)) {
+      setSelectedIngredients((prevArr): string[] => {
+        let newArr = [...prevArr];
+        newArr.push(ingredient);
+        return newArr;
+      });
+      setSearchText('');
+      search('');
+    } else {
+      setAvailableIngredients((prevArr): string[] => {
+        let newArr = [...prevArr];
+        newArr.push(ingredient);
+        return newArr;
+      });
+
+      setSelectedIngredients((prevArr): string[] => {
+        let newArr = [...prevArr];
+        newArr.push(ingredient);
+        return newArr;
+      });
+    }
   };
-  const generateQuote = (): void | boolean => {
+  const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setSearchText('');
+      addNewIngredient(event.currentTarget.value);
+    }
+  };
+  const search = (searchTerm: string) => {
+    let results = availableIngredients
+      .filter((ingredient: string) => {
+        return ingredient.toLowerCase().includes(searchTerm.toLowerCase());
+      })
+      .filter((ingredient: string) => {
+        return !selectedIngredients.includes(ingredient);
+      });
+    setSearchResults(results);
+    return false;
+  };
+  const customInput = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void | boolean => {
+    setSearchText(event.target.value);
+    search(event.target.value);
+  };
+  const generateRecipe = (): void | boolean => {
     if (loading === true) return false;
     const apiUrl = new URL(WEB_URL + 'api/openai/recipeDaniel');
     if (selectedIngredients.length === 0)
@@ -97,20 +149,32 @@ export default function Danielsquote() {
             );
           })}
         </div>
-        {selectableIngredients.length > 0 && (
-          <select value={selectedIngredient} onChange={addIngredient}>
-            <option value="none">Select a ingredient!</option>
-            {selectableIngredients
-              .filter((ingredient) => !selectedIngredients.includes(ingredient))
-              .map((ingredient, i) => {
-                return (
-                  <option key={i} value={ingredient}>
-                    {ingredient}
-                  </option>
-                );
-              })}
-          </select>
-        )}
+
+        <input
+          className="border w-auto   m-1"
+          placeholder={`Custom/search ingredient `}
+          type={'text'}
+          onInput={customInput}
+          value={searchText}
+          onKeyUp={handleEnterPress}
+        />
+        <div>
+          {searchText.length > 0 && <p>Search results for {searchText}:</p>}
+          <div>
+            {searchResults.map((result, id) => {
+              return (
+                <div
+                  onClick={() => {
+                    addNewIngredient(result);
+                  }}
+                  key={id}
+                >
+                  {result}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
       <div className="mt-10">
         {error !== '' && (
@@ -119,7 +183,7 @@ export default function Danielsquote() {
           </div>
         )}
         <button
-          onClick={generateQuote}
+          onClick={generateRecipe}
           className={
             'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-200 disabled:cursor-wait '
           }
@@ -127,6 +191,32 @@ export default function Danielsquote() {
         >
           Generate
         </button>
+        <div className="whitespace-pre-wrap">{generatedLines.reverse()[0]}</div>
+
+        {generatedLines.length > 1 && (
+          <div className="mt-20">
+            {!hidableContent && (
+              <div>
+                {generatedLines.slice(1).map((line, i) => {
+                  return (
+                    <div key={i} className="whitespace-pre-wrap">
+                      {line}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <button
+              onClick={() => {
+                setHidableContent(!hidableContent);
+              }}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-0.5 px-4 min-w-full rounded"
+            >
+              {hidableContent && <p>Show</p>}
+              {!hidableContent && <p>hide</p>}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
