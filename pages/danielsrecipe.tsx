@@ -133,6 +133,7 @@ export default function Danielsquote() {
           typeof data.response.choices[0].text === 'string'
         ) {
           setGeneratedLines([...generatedLines, data.response.choices[0].text]);
+          setSelectedGeneratedLine(generatedLines.length - 1);
         }
         setLoading(false);
       })
