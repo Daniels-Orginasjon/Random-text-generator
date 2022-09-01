@@ -18,10 +18,10 @@ function Quotes() {
     if (loading === true) return false;
     setLoading(true);
 
-    let cat = new URL(WEB_URL + "api/openai/quotes")
-    cat.searchParams.append("category", category)
+    let WEB_URL_CAT = new URL(WEB_URL + "api/openai/quotes")
+    WEB_URL_CAT.searchParams.append("category", category)
 
-    fetch(cat.href)
+    fetch(WEB_URL_CAT.href)
       .then((res) => {
         if (res.ok) {
           return res.json();
