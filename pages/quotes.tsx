@@ -51,7 +51,7 @@ function Quotes() {
         <div className='grid grid-flow-row-dense mt-2 grid-cols-3 grid-rows-3'>
           <div className='border col-span-2 text-center'>
             <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-200 disabled:cursor-wait" disabled={loading}>
-              Generate random quote
+              Generate quote
             </button>
           </div>
           <div className='border'>
